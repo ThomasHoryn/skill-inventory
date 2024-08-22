@@ -78,8 +78,6 @@ Edit [src/main/webapp/app/app.config.ts](src/main/webapp/app/app.config.ts) file
 import 'leaflet/dist/leaflet.js';
 ```
 
-Edit [src/main/webapp/content/scss/vendor.scss](src/main/webapp/content/scss/vendor.scss) file:
-
 ```
 @import 'leaflet/dist/leaflet.css';
 ```
