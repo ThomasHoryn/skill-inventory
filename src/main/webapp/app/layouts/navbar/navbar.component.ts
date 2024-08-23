@@ -80,7 +80,7 @@ export default class NavbarComponent implements OnInit {
       {
         label: this.getMenuLabel('global.menu.home'),
         icon: 'pi pi-home',
-        route: '/',
+        routerLink: '/',
       },
       {
         label: this.getMenuLabel('global.menu.language'),
@@ -103,15 +103,16 @@ export default class NavbarComponent implements OnInit {
       {
         label: this.getMenuLabel('global.menu.account.main'),
         icon: 'pi pi-user',
-        route: '/',
         items: [
           {
             label: this.getMenuLabel('global.menu.account.login'),
             icon: 'pi pi-sign-in',
+            routerLink: '/login',
           },
           {
             label: this.getMenuLabel('global.menu.account.register'),
             icon: 'pi pi-user-plus',
+            routerLink: '/account/register',
           },
         ],
       },
