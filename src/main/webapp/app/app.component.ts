@@ -5,10 +5,11 @@ import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import locale from '@angular/common/locales/en';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
-
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
 import MainComponent from './layouts/main/main.component';
+import { TranslateService } from '@ngx-translate/core';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   standalone: true,

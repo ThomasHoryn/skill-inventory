@@ -4,19 +4,18 @@ import { map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { ProfileService } from './profile.service';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   standalone: true,
   selector: 'jhi-page-ribbon',
   template: `
     @if (ribbonEnv$ | async; as ribbonEnv) {
-      <div class="ribbon">
-        <a href="" [jhiTranslate]="'global.ribbon.' + (ribbonEnv ?? '')">{{ { dev: 'Development' }[ribbonEnv ?? ''] }}</a>
-      </div>
+      <p-tag icon="pi pi-code" severity="danger" [value]="'global.ribbon.' + (ribbonEnv ?? '') | translate" />
     }
   `,
   styleUrl: './page-ribbon.component.scss',
-  imports: [SharedModule],
+  imports: [SharedModule, TagModule],
 })
 export default class PageRibbonComponent implements OnInit {
   ribbonEnv$?: Observable<string | undefined>;
