@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -17,8 +17,9 @@ import { MenubarModule } from 'primeng/menubar';
 import { TagModule } from 'primeng/tag';
 import PageRibbonComponent from '../profiles/page-ribbon.component';
 import { TranslationService } from '../../shared/language/translation.service';
-import { MenuItem, MenuItemCommandEvent } from 'primeng/api';
+import { MenuItem } from 'primeng/api';
 import { NgOptimizedImage } from '@angular/common';
+import { Authority } from '../../config/authority.constants';
 
 @Component({
   standalone: true,
@@ -45,6 +46,7 @@ export default class NavbarComponent implements OnInit {
   account = inject(AccountService).trackCurrentAccount();
   entitiesNavbarItems: NavbarItem[] = [];
   items: MenuItem[] = [];
+  private isAdmin: boolean = false;
 
   private loginService = inject(LoginService);
   private translateService = inject(TranslateService);
@@ -52,11 +54,21 @@ export default class NavbarComponent implements OnInit {
   private profileService = inject(ProfileService);
   private router = inject(Router);
   private translationService = inject(TranslationService);
+  private accountService = inject(AccountService);
 
   constructor() {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
     }
+
+    const isAdmin = computed(() => this.account()?.authorities && this.accountService.hasAnyAuthority(Authority.ADMIN));
+    effect(
+      () => {
+        this.isAdmin = !!isAdmin();
+        this.updateMenuItems();
+      },
+      { allowSignalWrites: true },
+    );
   }
 
   ngOnInit(): void {
@@ -83,6 +95,46 @@ export default class NavbarComponent implements OnInit {
         routerLink: '/',
       },
       {
+        visible: this.isAdmin,
+        label: this.getMenuLabel('global.menu.admin.main'),
+        icon: 'pi pi-cog',
+        items: [
+          {
+            label: this.getMenuLabel('global.menu.entities.adminAuthority'),
+            routerLink: '/authority',
+          },
+          {
+            label: this.getMenuLabel('global.menu.admin.userManagement'),
+            routerLink: '/admin/user-management',
+          },
+          {
+            label: this.getMenuLabel('global.menu.admin.metrics'),
+            routerLink: '/admin/metrics',
+          },
+          {
+            label: this.getMenuLabel('global.menu.admin.health'),
+            routerLink: '/admin/health',
+          },
+          {
+            label: this.getMenuLabel('global.menu.admin.configuration'),
+            routerLink: '/admin/configuration',
+          },
+          {
+            label: this.getMenuLabel('global.menu.admin.logs'),
+            routerLink: '/admin/logs',
+          },
+          {
+            label: this.getMenuLabel('global.menu.admin.apidocs'),
+            routerLink: '/admin/docs',
+          },
+          {
+            label: this.getMenuLabel('global.menu.admin.database'),
+            url: './h2-console/',
+            visible: !this.inProduction,
+          },
+        ],
+      },
+      {
         label: this.getMenuLabel('global.menu.language'),
         icon: 'pi pi-flag',
         items: [
@@ -105,14 +157,34 @@ export default class NavbarComponent implements OnInit {
         icon: 'pi pi-user',
         items: [
           {
+            visible: this.account() === null,
             label: this.getMenuLabel('global.menu.account.login'),
             icon: 'pi pi-sign-in',
             routerLink: '/login',
           },
           {
+            visible: this.account() === null,
             label: this.getMenuLabel('global.menu.account.register'),
             icon: 'pi pi-user-plus',
             routerLink: '/account/register',
+          },
+          {
+            visible: this.account() !== null,
+            label: this.getMenuLabel('global.menu.account.settings'),
+            icon: 'pi pi-wrench',
+            routerLink: '/account/settings',
+          },
+          {
+            visible: this.account() !== null,
+            label: this.getMenuLabel('global.menu.account.password'),
+            icon: 'pi pi-lock',
+            routerLink: '/account/password',
+          },
+          {
+            visible: this.account() !== null,
+            label: this.getMenuLabel('global.menu.account.logout'),
+            icon: 'pi pi-sign-out',
+            command: () => this.logout(),
           },
         ],
       },
