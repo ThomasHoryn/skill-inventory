@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -39,9 +39,7 @@ import { Authority } from '../../config/authority.constants';
 })
 export default class NavbarComponent implements OnInit {
   inProduction?: boolean;
-  isNavbarCollapsed = signal(true);
   languages = LANGUAGES;
-  openAPIEnabled?: boolean;
   version = '';
   account = inject(AccountService).trackCurrentAccount();
   entitiesNavbarItems: NavbarItem[] = [];
@@ -75,7 +73,6 @@ export default class NavbarComponent implements OnInit {
     this.entitiesNavbarItems = EntityNavbarItems;
     this.profileService.getProfileInfo().subscribe(profileInfo => {
       this.inProduction = profileInfo.inProduction;
-      this.openAPIEnabled = profileInfo.openAPIEnabled;
     });
 
     this.translateService.onLangChange.subscribe(() => {
@@ -196,21 +193,8 @@ export default class NavbarComponent implements OnInit {
     this.translateService.use(languageKey);
   }
 
-  collapseNavbar(): void {
-    this.isNavbarCollapsed.set(true);
-  }
-
-  login(): void {
-    this.router.navigate(['/login']);
-  }
-
   logout(): void {
-    this.collapseNavbar();
     this.loginService.logout();
     this.router.navigate(['']);
-  }
-
-  toggleNavbar(): void {
-    this.isNavbarCollapsed.update(isNavbarCollapsed => !isNavbarCollapsed);
   }
 }
