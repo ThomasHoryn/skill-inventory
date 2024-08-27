@@ -65,7 +65,10 @@
           "required": "Your password is required.",
           "minlength": "Your password is required to be at least 4 characters.",
           "maxlength": "Your password cannot be longer than 50 characters.",
-          "strength": "Password strength:"
+          "strength": "Password strength:",
+          "weakLabel": "Weak password",
+          "mediumLabel": "Medium password",
+          "strongLabel": "Strong password"
         },
         "confirmpassword": {
           "required": "Your confirmation password is required.",
@@ -76,7 +79,7 @@
           "required": "Your email is required.",
           "invalid": "Your email is invalid.",
           "minlength": "Your email is required to be at least 5 characters.",
-          "maxlength": "Your email cannot be longer than 50 characters."
+          "maxlength": "Your email cannot be longer than 254 characters."
         }
       }
     },

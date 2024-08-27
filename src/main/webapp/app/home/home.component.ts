@@ -30,6 +30,12 @@ export default class HomeComponent implements OnInit, OnDestroy {
       .subscribe(account => this.account.set(account));
   }
 
+  isShown = false;
+
+  toggle() {
+    this.isShown = !this.isShown;
+  }
+
   login(): void {
     this.router.navigate(['/login']);
   }

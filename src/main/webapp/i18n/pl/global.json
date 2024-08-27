@@ -65,7 +65,10 @@
           "required": "Twoje hasło jest wymagane.",
           "minlength": "Twoje hasło powinno mieć minimum 4 znaki",
           "maxlength": "Twoje hasło nie może być dłuższe niż 50 znaków",
-          "strength": "Siła hasła:"
+          "strength": "Siła hasła:",
+          "weakLabel": "Słabe hasło",
+          "mediumLabel": "Średnie hasło",
+          "strongLabel": "Mocne hasło"
         },
         "confirmpassword": {
           "required": "Potwierdzenie hasła jest wymagane.",
@@ -76,7 +79,7 @@
           "required": "Twój email jest wymagany.",
           "invalid": "Twój email jest błędny.",
           "minlength": "Twój email musi mieć przynajmniej 5 znaków",
-          "maxlength": "Twój email nie może być dłuższy niż 50 znaków"
+          "maxlength": "Twój email nie może być dłuższy niż 254 znaki"
         }
       }
     },

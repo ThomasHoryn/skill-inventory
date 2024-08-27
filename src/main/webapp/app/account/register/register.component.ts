@@ -1,19 +1,48 @@
-import { Component, AfterViewInit, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 import SharedModule from 'app/shared/shared.module';
 import PasswordStrengthBarComponent from '../password/password-strength-bar/password-strength-bar.component';
 import { RegisterService } from './register.service';
+import { DialogModule } from 'primeng/dialog';
+import { Button, ButtonDirective } from 'primeng/button';
+import { PasswordModule } from 'primeng/password';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
+import { StyleClassModule } from 'primeng/styleclass';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Ripple } from 'primeng/ripple';
 
 @Component({
   standalone: true,
   selector: 'jhi-register',
-  imports: [SharedModule, RouterModule, FormsModule, ReactiveFormsModule, PasswordStrengthBarComponent],
-  templateUrl: './register.component.html',
+  imports: [
+    StyleClassModule,
+    SharedModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PasswordStrengthBarComponent,
+    DialogModule,
+    Button,
+    PasswordModule,
+    CheckboxModule,
+    InputTextModule,
+    ButtonDirective,
+    Ripple,
+  ],
+  templateUrl: './p-register.component.html',
+  animations: [
+    trigger('fade', [
+      state('visible', style({ display: 'block', opacity: 1 })),
+      state('hidden', style({ display: 'none', opacity: 0 })),
+      transition('visible <=> hidden', animate('500ms ease-in-out')),
+    ]),
+  ],
 })
 export default class RegisterComponent implements AfterViewInit {
   login = viewChild.required<ElementRef>('login');
@@ -29,7 +58,7 @@ export default class RegisterComponent implements AfterViewInit {
       nonNullable: true,
       validators: [
         Validators.required,
-        Validators.minLength(1),
+        Validators.minLength(5),
         Validators.maxLength(50),
         Validators.pattern('^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$'),
       ],
@@ -47,6 +76,26 @@ export default class RegisterComponent implements AfterViewInit {
       validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
     }),
   });
+
+  get isLoginInvalid() {
+    const loginControl = this.registerForm.get('login');
+    return loginControl!.invalid && (loginControl!.dirty || loginControl!.touched);
+  }
+
+  get isEmailInvalid() {
+    const EmailControl = this.registerForm.get('email');
+    return EmailControl!.invalid && (EmailControl!.dirty || EmailControl!.touched);
+  }
+
+  get isPasswordInvalid() {
+    const password = this.registerForm.get('password');
+    return password!.invalid && (password!.dirty || password!.touched);
+  }
+
+  get isConfirmPasswordInvalid() {
+    const confirmPassword = this.registerForm.get('confirmPassword');
+    return confirmPassword!.invalid && (confirmPassword!.dirty || confirmPassword!.touched);
+  }
 
   private translateService = inject(TranslateService);
   private registerService = inject(RegisterService);

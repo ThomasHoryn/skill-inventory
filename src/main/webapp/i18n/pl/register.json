@@ -8,7 +8,7 @@
       "validate": {
         "login": {
           "required": "Twój login jest wymagany.",
-          "minlength": "Twój login musi mieć długość co najmniej 1 znaku",
+          "minlength": "Twój login musi mieć długość co najmniej 5 znaków",
           "maxlength": "Twój login nie może być dłuższy niż 50 znaków",
           "pattern": "Niewłaściwa nazwa użytkownika."
         }

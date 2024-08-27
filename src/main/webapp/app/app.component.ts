@@ -8,8 +8,6 @@ import locale from '@angular/common/locales/en';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
 import MainComponent from './layouts/main/main.component';
-import { TranslateService } from '@ngx-translate/core';
-import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   standalone: true,

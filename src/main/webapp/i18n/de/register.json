@@ -8,7 +8,7 @@
       "validate": {
         "login": {
           "required": "Ihr Benutzername wird benötigt.",
-          "minlength": "Ihr Benutzername muss mindestens ein Zeichen lang sein.",
+          "minlength": "Ihr Benutzername muss mindestens fünf Zeichen lang sein.",
           "maxlength": "Ihr Benutzername darf nicht länger als 50 Zeichen sein.",
           "pattern": "Ihr Benutzername ist ungültig."
         }
