@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -16,6 +16,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { StyleClassModule } from 'primeng/styleclass';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Ripple } from 'primeng/ripple';
+import { MessagesModule } from 'primeng/messages';
+import { Message } from 'primeng/api';
 
 @Component({
   standalone: true,
@@ -34,6 +36,7 @@ import { Ripple } from 'primeng/ripple';
     InputTextModule,
     ButtonDirective,
     Ripple,
+    MessagesModule,
   ],
   templateUrl: './p-register.component.html',
   animations: [
@@ -44,7 +47,7 @@ import { Ripple } from 'primeng/ripple';
     ]),
   ],
 })
-export default class RegisterComponent implements AfterViewInit {
+export default class RegisterComponent implements AfterViewInit, OnInit {
   login = viewChild.required<ElementRef>('login');
 
   doNotMatch = signal(false);
@@ -52,6 +55,17 @@ export default class RegisterComponent implements AfterViewInit {
   errorEmailExists = signal(false);
   errorUserExists = signal(false);
   success = signal(false);
+
+  confirmPasswordErrorMsg: Message[] = [];
+
+  ngOnInit(): void {
+    this.confirmPasswordErrorMsg = [
+      {
+        severity: 'error',
+        detail: 'The password and its confirmation do not match!',
+      },
+    ];
+  }
 
   registerForm = new FormGroup({
     login: new FormControl('', {
@@ -90,6 +104,12 @@ export default class RegisterComponent implements AfterViewInit {
   get isPasswordInvalid() {
     const password = this.registerForm.get('password');
     return password!.invalid && (password!.dirty || password!.touched);
+  }
+
+  get isPasswordMatch() {
+    const password = this.registerForm.get('password');
+    const confirm = this.registerForm.get('confirmPassword');
+    return (password!.dirty || password!.touched) && (confirm!.dirty || confirm!.touched) && password! !== confirm!;
   }
 
   get isConfirmPasswordInvalid() {

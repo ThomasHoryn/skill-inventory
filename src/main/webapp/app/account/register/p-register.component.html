@@ -10,6 +10,10 @@
           </div>
         </div>
 
+        <div [@fade]="isConfirmPasswordInvalid ? 'visible' : 'hidden'">
+          <p-messages [(value)]="confirmPasswordErrorMsg" [closable]="false" [enableService]="false" class="flex flex-column gap-2 mb-4" />
+        </div>
+
         @if (!success()) {
           <form name="form" (ngSubmit)="register()" [formGroup]="registerForm">
             <div class="flex flex-column gap-2 mb-4">
