@@ -18,6 +18,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Ripple } from 'primeng/ripple';
 import { MessagesModule } from 'primeng/messages';
 import { Message } from 'primeng/api';
+import { TranslationService } from '../../shared/language/translation.service';
 
 @Component({
   standalone: true,
@@ -57,14 +58,19 @@ export default class RegisterComponent implements AfterViewInit, OnInit {
   success = signal(false);
 
   confirmPasswordErrorMsg: Message[] = [];
+  userExistErrorMsg: Message[] = [];
+  emailExistErrorMsg: Message[] = [];
+
+  private translationService = inject(TranslationService);
 
   ngOnInit(): void {
-    this.confirmPasswordErrorMsg = [
-      {
-        severity: 'error',
-        detail: 'The password and its confirmation do not match!',
-      },
-    ];
+    this.translateService.onLangChange.subscribe(() => {
+      this.updateErrorItems();
+    });
+  }
+
+  getTranslation(description: string): string {
+    return this.translationService.getTranslation(description);
   }
 
   registerForm = new FormGroup({
@@ -106,7 +112,7 @@ export default class RegisterComponent implements AfterViewInit, OnInit {
     return password!.invalid && (password!.dirty || password!.touched);
   }
 
-  get isPasswordMatch() {
+  get isPasswordNotMatch() {
     const password = this.registerForm.get('password');
     const confirm = this.registerForm.get('confirmPassword');
     return (password!.dirty || password!.touched) && (confirm!.dirty || confirm!.touched) && password! !== confirm!;
@@ -149,5 +155,26 @@ export default class RegisterComponent implements AfterViewInit, OnInit {
     } else {
       this.error.set(true);
     }
+  }
+
+  private updateErrorItems() {
+    this.confirmPasswordErrorMsg = [
+      {
+        severity: 'error',
+        detail: this.getTranslation('global.messages.error.dontmatch'),
+      },
+    ];
+    this.userExistErrorMsg = [
+      {
+        severity: 'error',
+        detail: this.getTranslation('register.messages.error.userexists'),
+      },
+    ];
+    this.emailExistErrorMsg = [
+      {
+        severity: 'error',
+        detail: this.getTranslation('register.messages.error.emailexists'),
+      },
+    ];
   }
 }

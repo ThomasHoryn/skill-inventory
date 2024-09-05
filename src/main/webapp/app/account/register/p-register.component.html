@@ -10,8 +10,31 @@
           </div>
         </div>
 
-        <div [@fade]="isConfirmPasswordInvalid ? 'visible' : 'hidden'">
-          <p-messages [(value)]="confirmPasswordErrorMsg" [closable]="false" [enableService]="false" class="flex flex-column gap-2 mb-4" />
+        <div [@fade]="isPasswordNotMatch ? 'visible' : 'hidden'">
+          <p-messages
+            [(value)]="confirmPasswordErrorMsg"
+            [closable]="false"
+            [enableService]="false"
+            class="flex flex-column gap-2 mb-4 md:w-30rem"
+          />
+        </div>
+
+        <div [@fade]="errorUserExists() ? 'visible' : 'hidden'">
+          <p-messages
+            [(value)]="userExistErrorMsg"
+            [closable]="false"
+            [enableService]="false"
+            class="flex flex-column gap-2 mb-4 md:w-30rem"
+          />
+        </div>
+
+        <div [@fade]="errorEmailExists() ? 'visible' : 'hidden'">
+          <p-messages
+            [(value)]="emailExistErrorMsg"
+            [closable]="false"
+            [enableService]="false"
+            class="flex flex-column gap-2 mb-4 md:w-30rem"
+          />
         </div>
 
         @if (!success()) {
@@ -141,21 +164,21 @@
               >
               </p-password>
               <small
-                [@fade]="isPasswordInvalid && registerForm.get('confirmPassword')?.errors?.required ? 'visible' : 'hidden'"
+                [@fade]="isConfirmPasswordInvalid && registerForm.get('confirmPassword')?.errors?.required ? 'visible' : 'hidden'"
                 class="p-error"
                 jhiTranslate="global.messages.validate.confirmpassword.required"
                 >Your password is required.</small
               >
 
               <small
-                [@fade]="isPasswordInvalid && registerForm.get('confirmPassword')?.errors?.minlength ? 'visible' : 'hidden'"
+                [@fade]="isConfirmPasswordInvalid && registerForm.get('confirmPassword')?.errors?.minlength ? 'visible' : 'hidden'"
                 class="p-error"
                 jhiTranslate="global.messages.validate.confirmpassword.minlength"
                 >Your password is required to be at least 4 characters.</small
               >
 
               <small
-                [@fade]="isPasswordInvalid && registerForm.get('confirmPassword')?.errors?.maxlength ? 'visible' : 'hidden'"
+                [@fade]="isConfirmPasswordInvalid && registerForm.get('confirmPassword')?.errors?.maxlength ? 'visible' : 'hidden'"
                 class="p-error"
                 jhiTranslate="global.messages.validate.confirmpassword.maxlength"
                 >Your password cannot be longer than 50 characters.</small
