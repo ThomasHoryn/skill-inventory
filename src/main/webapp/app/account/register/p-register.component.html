@@ -183,6 +183,12 @@
                 jhiTranslate="global.messages.validate.confirmpassword.maxlength"
                 >Your password cannot be longer than 50 characters.</small
               >
+              <small
+                [@fade]="isConfirmPasswordInvalid && registerForm.get('confirmPassword')?.errors?.passwordMismatch ? 'visible' : 'hidden'"
+                class="p-error"
+                jhiTranslate="global.messages.error.dontmatch"
+                >Password must match.</small
+              >
             </div>
             <button
               pButton

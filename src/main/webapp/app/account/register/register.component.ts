@@ -19,6 +19,7 @@ import { Ripple } from 'primeng/ripple';
 import { MessagesModule } from 'primeng/messages';
 import { Message } from 'primeng/api';
 import { TranslationService } from '../../shared/language/translation.service';
+import { passwordMatchValidator } from './password-match.validator';
 
 @Component({
   standalone: true,
@@ -67,35 +68,40 @@ export default class RegisterComponent implements AfterViewInit, OnInit {
     this.translateService.onLangChange.subscribe(() => {
       this.updateErrorItems();
     });
+
+    this.updateErrorItems();
   }
 
   getTranslation(description: string): string {
     return this.translationService.getTranslation(description);
   }
 
-  registerForm = new FormGroup({
-    login: new FormControl('', {
-      nonNullable: true,
-      validators: [
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(50),
-        Validators.pattern('^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$'),
-      ],
-    }),
-    email: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email],
-    }),
-    password: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
-    }),
-    confirmPassword: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
-    }),
-  });
+  registerForm = new FormGroup(
+    {
+      login: new FormControl('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(50),
+          Validators.pattern('^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$'),
+        ],
+      }),
+      email: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email],
+      }),
+      password: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
+      }),
+      confirmPassword: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
+      }),
+    },
+    { validators: passwordMatchValidator },
+  );
 
   get isLoginInvalid() {
     const loginControl = this.registerForm.get('login');
@@ -115,7 +121,8 @@ export default class RegisterComponent implements AfterViewInit, OnInit {
   get isPasswordNotMatch() {
     const password = this.registerForm.get('password');
     const confirm = this.registerForm.get('confirmPassword');
-    return (password!.dirty || password!.touched) && (confirm!.dirty || confirm!.touched) && password! !== confirm!;
+    console.log('password math ? password! !==confirm!');
+    return (password!.dirty || password!.touched) && (confirm!.dirty || confirm!.touched) && password?.value! !== confirm?.value!;
   }
 
   get isConfirmPasswordInvalid() {
