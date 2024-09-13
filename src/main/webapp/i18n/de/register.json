@@ -13,11 +13,11 @@
           "pattern": "Ihr Benutzername ist ungültig."
         }
       },
-      "success": "<strong>Registrierung gespeichert!</strong> Bitte überprüfen Sie Ihre E-Mails für die Bestätigung.",
+      "success": "Registrierung gespeichert! Bitte überprüfen Sie Ihre E-Mails für die Bestätigung.",
       "error": {
-        "fail": "<strong>Registrierung fehlgeschlagen!</strong> Bitte versuchen Sie es später nochmal.",
-        "userexists": "<strong>Benutzername bereits vergeben!</strong> Bitte wählen Sie einen anderen aus.",
-        "emailexists": "<strong>E-Mail-Adresse wird bereits verwendet!</strong> Bitte wählen Sie eine andere aus."
+        "fail": "Registrierung fehlgeschlagen! Bitte versuchen Sie es später nochmal.",
+        "userexists": "Benutzername bereits vergeben! Bitte wählen Sie einen anderen aus.",
+        "emailexists": "E-Mail-Adresse wird bereits verwendet! Bitte wählen Sie eine andere aus."
       }
     }
   }
